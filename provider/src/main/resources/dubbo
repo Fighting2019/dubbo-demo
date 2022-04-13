@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+    <dubbo:application name="demo-provider">
+        <!--修改qos端口号，默认22222-->
+        <dubbo:parameter key="qos.port" value="22222"/>
+        <!--关闭qos功能，默认true-->
+        <dubbo:parameter key="qos.enable" value="true"/>
+        <!--是否开启任意ip访问，为了安全 dubbo 的 qos 默认只支持本地连接-->
+        <dubbo:parameter key="qos.accept.foreign.ip" value="false"/>
+    </dubbo:application>
+    <dubbo:registry address="zookeeper://127.0.0.1:2181" use-as-config-center="true" use-as-metadata-center="true"/>
+    <dubbo:protocol name="dubbo" port="20890"/>
+    <dubbo:protocol name="injvm" />
+
+    <bean id="helloDubbo" class="com.study.facade.HelloDubbo"/>
+    <dubbo:service interface="com.study.HelloService" ref="helloDubbo" export="false"/>
+</beans>
